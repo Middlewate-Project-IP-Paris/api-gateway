@@ -45,6 +45,11 @@ class channelServiceStub(object):
                 request_serializer=channel__pb2.GetPostsRequest.SerializeToString,
                 response_deserializer=channel__pb2.GetPostsResponse.FromString,
                 )
+        self.getPostInfo = channel.unary_unary(
+                '/channel.channelService/getPostInfo',
+                request_serializer=channel__pb2.GetPostsInfoRequest.SerializeToString,
+                response_deserializer=channel__pb2.GetPostInfoResponse.FromString,
+                )
 
 
 class channelServiceServicer(object):
@@ -86,6 +91,12 @@ class channelServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def getPostInfo(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_channelServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -118,6 +129,11 @@ def add_channelServiceServicer_to_server(servicer, server):
                     servicer.getPosts,
                     request_deserializer=channel__pb2.GetPostsRequest.FromString,
                     response_serializer=channel__pb2.GetPostsResponse.SerializeToString,
+            ),
+            'getPostInfo': grpc.unary_unary_rpc_method_handler(
+                    servicer.getPostInfo,
+                    request_deserializer=channel__pb2.GetPostsInfoRequest.FromString,
+                    response_serializer=channel__pb2.GetPostInfoResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -228,5 +244,22 @@ class channelService(object):
         return grpc.experimental.unary_unary(request, target, '/channel.channelService/getPosts',
             channel__pb2.GetPostsRequest.SerializeToString,
             channel__pb2.GetPostsResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def getPostInfo(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/channel.channelService/getPostInfo',
+            channel__pb2.GetPostsInfoRequest.SerializeToString,
+            channel__pb2.GetPostInfoResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
