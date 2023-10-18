@@ -1,0 +1,219 @@
+openapi: 3.0.0
+info:
+  title: API-Gateway
+  description: |
+    This service is responsible for
+
+    - Routing requests from front to backend services (smth like BFF pattern)
+    - Enriching responses
+    - Preparing data for the front (change types etc.)
+    - Request validation from front (so back will not be loaded).
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/Middleware/API-Gateway/1.0.0
+  description: SwaggerHub API Auto Mocking
+paths:
+  /api/v1/channel/id={ids}:
+    get:
+      tags:
+      - channel
+      summary: Get Channels by ID
+      operationId: api_v1_channel_idids_get
+      parameters:
+      - name: ids
+        in: path
+        description: IDs of channels
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minLength: 1
+          type: array
+          items:
+            type: integer
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200'
+                x-content-type: application/json
+        "404":
+          description: No user found
+      x-openapi-router-controller: swagger_server.controllers.channel_controller
+  /api/v1/channel/join/{invite_link}:
+    get:
+      tags:
+      - channel
+      summary: Join channel by link
+      operationId: api_v1_channel_join_invite_link_get
+      parameters:
+      - name: invite_link
+        in: path
+        description: invite link to channel
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+        "404":
+          description: No group found
+      x-openapi-router-controller: swagger_server.controllers.channel_controller
+  /api/v1/history/{object_type}/{history_data}/id={ids}:
+    get:
+      tags:
+      - history
+      summary: Get Channels history by ID
+      operationId: api_v1_history_object_type_history_data_idids_get
+      parameters:
+      - name: ids
+        in: path
+        description: IDs of channels
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minLength: 1
+          type: array
+          items:
+            type: integer
+      - name: object_type
+        in: path
+        description: "Type of object, channel or post"
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: history_data
+        in: path
+        description: "Type of object, subs or views"
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_1'
+                x-content-type: application/json
+        "404":
+          description: No user found
+      x-openapi-router-controller: swagger_server.controllers.history_controller
+  /api/v1/posts/{channel_id}/id={ids}:
+    get:
+      tags:
+      - posts
+      summary: Get Posts by ID
+      operationId: api_v1_posts_channel_id_idids_get
+      parameters:
+      - name: ids
+        in: path
+        description: IDs of posts
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      - name: channel_id
+        in: path
+        description: IDs of channel
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minLength: 1
+          type: array
+          items:
+            type: integer
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_2'
+                x-content-type: application/json
+        "404":
+          description: No user found
+      x-openapi-router-controller: swagger_server.controllers.posts_controller
+components:
+  schemas:
+    inline_response_200:
+      type: object
+      properties:
+        channel_id:
+          type: integer
+        name:
+          type: string
+        link:
+          type: string
+        description:
+          type: string
+        subs:
+          type: integer
+          format: int64
+      example:
+        subs: 6
+        name: name
+        link: link
+        description: description
+        channel_id: 0
+    apiv1historyobject_typehistory_dataidids_measurements:
+      type: object
+      properties:
+        date:
+          type: string
+        subs:
+          type: integer
+          format: int64
+      example:
+        date: date
+        subs: 6
+    inline_response_200_1:
+      type: object
+      properties:
+        channel_id:
+          type: integer
+        measurements:
+          $ref: '#/components/schemas/apiv1historyobject_typehistory_dataidids_measurements'
+      example:
+        channel_id: 0
+        measurements:
+          date: date
+          subs: 6
+    inline_response_200_2:
+      type: object
+      properties:
+        post_id:
+          type: integer
+        name:
+          type: string
+        link:
+          type: string
+        description:
+          type: string
+        subs:
+          type: integer
+          format: int64
+      example:
+        post_id: 0
+        subs: 6
+        name: name
+        link: link
+        description: description
+
