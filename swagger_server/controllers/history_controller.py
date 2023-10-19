@@ -19,4 +19,10 @@ def api_v1_history_object_type_history_data_idids_get(ids, object_type, history_
 
     :rtype: List[InlineResponse2001]
     """
+
+    match object_type:
+        case "channel":
+            pass
+        case "post":
+            pass
     return 'do some magic!'
