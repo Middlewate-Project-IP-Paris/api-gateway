@@ -6,7 +6,7 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from swagger_server.models.base_model_ import Model
-from swagger_server.models.apiv1historyobject_typehistory_dataidids_measurements import Apiv1historyobjectTypehistoryDataididsMeasurements  # noqa: F401,E501
+from swagger_server.models.apiv1historyhistory_dataidids_measurements import Apiv1historyhistoryDataididsMeasurements  # noqa: F401,E501
 from swagger_server import util
 
 
@@ -15,17 +15,17 @@ class InlineResponse2001(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, channel_id: int=None, measurements: Apiv1historyobjectTypehistoryDataididsMeasurements=None):  # noqa: E501
+    def __init__(self, channel_id: int=None, measurements: Apiv1historyhistoryDataididsMeasurements=None):  # noqa: E501
         """InlineResponse2001 - a model defined in Swagger
 
         :param channel_id: The channel_id of this InlineResponse2001.  # noqa: E501
         :type channel_id: int
         :param measurements: The measurements of this InlineResponse2001.  # noqa: E501
-        :type measurements: Apiv1historyobjectTypehistoryDataididsMeasurements
+        :type measurements: Apiv1historyhistoryDataididsMeasurements
         """
         self.swagger_types = {
             'channel_id': int,
-            'measurements': Apiv1historyobjectTypehistoryDataididsMeasurements
+            'measurements': Apiv1historyhistoryDataididsMeasurements
         }
 
         self.attribute_map = {
@@ -68,22 +68,22 @@ class InlineResponse2001(Model):
         self._channel_id = channel_id
 
     @property
-    def measurements(self) -> Apiv1historyobjectTypehistoryDataididsMeasurements:
+    def measurements(self) -> Apiv1historyhistoryDataididsMeasurements:
         """Gets the measurements of this InlineResponse2001.
 
 
         :return: The measurements of this InlineResponse2001.
-        :rtype: Apiv1historyobjectTypehistoryDataididsMeasurements
+        :rtype: Apiv1historyhistoryDataididsMeasurements
         """
         return self._measurements
 
     @measurements.setter
-    def measurements(self, measurements: Apiv1historyobjectTypehistoryDataididsMeasurements):
+    def measurements(self, measurements: Apiv1historyhistoryDataididsMeasurements):
         """Sets the measurements of this InlineResponse2001.
 
 
         :param measurements: The measurements of this InlineResponse2001.
-        :type measurements: Apiv1historyobjectTypehistoryDataididsMeasurements
+        :type measurements: Apiv1historyhistoryDataididsMeasurements
         """
 
         self._measurements = measurements

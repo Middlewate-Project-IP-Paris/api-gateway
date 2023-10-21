@@ -18,7 +18,7 @@ class TestChannelController(BaseTestCase):
         Get Channels by ID
         """
         response = self.client.open(
-            '/Middleware/API-Gateway/1.0.0/api/v1/channel/id={ids}'.format(ids=56),
+            '/MiddleWare/API-Gateway/1.0.0/api/v1/channel/id={ids}'.format(ids=56),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -29,7 +29,7 @@ class TestChannelController(BaseTestCase):
         Join channel by link
         """
         response = self.client.open(
-            '/Middleware/API-Gateway/1.0.0/api/v1/channel/join/{invite_link}'.format(invite_link='invite_link_example'),
+            '/MiddleWare/API-Gateway/1.0.0/api/v1/channel/join/{invite_link}'.format(invite_link='invite_link_example'),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))

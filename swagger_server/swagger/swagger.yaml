@@ -10,7 +10,7 @@ info:
     - Request validation from front (so back will not be loaded).
   version: 1.0.0
 servers:
-- url: https://virtserver.swaggerhub.com/Middleware/API-Gateway/1.0.0
+- url: https://virtserver.swaggerhub.com/MiddleWare/API-Gateway/1.0.0
   description: SwaggerHub API Auto Mocking
 paths:
   /api/v1/channel/id={ids}:
@@ -65,12 +65,12 @@ paths:
         "404":
           description: No group found
       x-openapi-router-controller: swagger_server.controllers.channel_controller
-  /api/v1/history/{object_type}/{history_data}/id={ids}:
+  /api/v1/history/{history_data}/id={ids}:
     get:
       tags:
       - history
       summary: Get Channels history by ID
-      operationId: api_v1_history_object_type_history_data_idids_get
+      operationId: api_v1_history_history_data_idids_get
       parameters:
       - name: ids
         in: path
@@ -83,14 +83,6 @@ paths:
           type: array
           items:
             type: integer
-      - name: object_type
-        in: path
-        description: "Type of object, channel or post"
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
       - name: history_data
         in: path
         description: "Type of object, subs or views"
@@ -108,6 +100,50 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/inline_response_200_1'
+                x-content-type: application/json
+        "404":
+          description: No user found
+      x-openapi-router-controller: swagger_server.controllers.history_controller
+  /api/v1/history/{history_data}/channel_id={channel_id}/post_ids={post_id}:
+    get:
+      tags:
+      - history
+      summary: Get Channels history by ID
+      operationId: api_v1_history_history_data_channel_idchannel_id_post_idspost_id_get
+      parameters:
+      - name: channel_id
+        in: path
+        description: IDs of channels
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      - name: post_id
+        in: path
+        description: IDs of channels
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      - name: history_data
+        in: path
+        description: "Type of object,views or shares"
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_2'
                 x-content-type: application/json
         "404":
           description: No user found
@@ -146,11 +182,72 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/inline_response_200_2'
+                  $ref: '#/components/schemas/inline_response_200_3'
                 x-content-type: application/json
         "404":
           description: No user found
       x-openapi-router-controller: swagger_server.controllers.posts_controller
+  /api/v1/scheduler/create:
+    post:
+      tags:
+      - schedulers
+      summary: Create scheduler
+      operationId: api_v1_scheduler_create_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/scheduler_create_body'
+      responses:
+        "200":
+          description: Scheduler created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+        "404":
+          description: No user found
+      x-openapi-router-controller: swagger_server.controllers.schedulers_controller
+  /api/v1/scheduler/update:
+    put:
+      tags:
+      - schedulers
+      summary: Create scheduler
+      operationId: api_v1_scheduler_update_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/scheduler_update_body'
+      responses:
+        "200":
+          description: Scheduler updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scheduler_update_body'
+        "404":
+          description: No user found
+      x-openapi-router-controller: swagger_server.controllers.schedulers_controller
+  /api/v1/scheduler/get_all:
+    get:
+      tags:
+      - schedulers
+      summary: Get all the schedulers
+      operationId: api_v1_scheduler_get_all_get
+      responses:
+        "200":
+          description: Scheduler updated
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/scheduler_update_body'
+                x-content-type: application/json
+        "404":
+          description: No user found
+      x-openapi-router-controller: swagger_server.controllers.schedulers_controller
 components:
   schemas:
     inline_response_200:
@@ -173,30 +270,45 @@ components:
         link: link
         description: description
         channel_id: 0
-    apiv1historyobject_typehistory_dataidids_measurements:
+    apiv1historyhistory_dataidids_measurements:
       type: object
       properties:
         date:
           type: string
-        subs:
+        value:
           type: integer
           format: int64
       example:
         date: date
-        subs: 6
+        value: 6
     inline_response_200_1:
       type: object
       properties:
         channel_id:
           type: integer
         measurements:
-          $ref: '#/components/schemas/apiv1historyobject_typehistory_dataidids_measurements'
+          $ref: '#/components/schemas/apiv1historyhistory_dataidids_measurements'
       example:
         channel_id: 0
         measurements:
           date: date
-          subs: 6
+          value: 6
     inline_response_200_2:
+      type: object
+      properties:
+        channel_id:
+          type: integer
+        post_id:
+          type: integer
+        measurements:
+          $ref: '#/components/schemas/apiv1historyhistory_dataidids_measurements'
+      example:
+        post_id: 6
+        channel_id: 0
+        measurements:
+          date: date
+          value: 6
+    inline_response_200_3:
       type: object
       properties:
         post_id:
@@ -216,4 +328,48 @@ components:
         name: name
         link: link
         description: description
+    scheduler_create_body:
+      type: object
+      properties:
+        action:
+          type: string
+        time_repeat:
+          type: integer
+          description: time in minutes
+        name:
+          type: string
+    inline_response_200_4:
+      type: object
+      properties:
+        scheduler_id:
+          type: integer
+        action:
+          type: string
+        time_repeat:
+          type: integer
+          description: time in minutes
+        name:
+          type: string
+      example:
+        name: name
+        action: action
+        time_repeat: 6
+        scheduler_id: 0
+    scheduler_update_body:
+      type: object
+      properties:
+        scheduler_id:
+          type: integer
+        action:
+          type: string
+        time_repeat:
+          type: integer
+          description: time in minutes
+        name:
+          type: string
+      example:
+        name: name
+        action: action
+        time_repeat: 6
+        scheduler_id: 0
 
