@@ -91,35 +91,17 @@ def api_v1_history_history_data_channel_idchannel_id_post_idspost_id_get(channel
     }
 
     d = MessageToDict(response)
-    # print(d)
-    history_info = []
     values = d['postStatHistory'][0]['postHistory'][0]
     print(values)
     
     if 'historyValues' in values.keys():
         values = values['historyValues']
         for value in values:
-            # print(value['moment'])
-            # moment = datetime.datetime.fromtimestamp(value['moment'].seconds + value['moment'].nanos / 1e9)
             measurement = {
                         "date": value['moment'],
                         "value": value['value']
                     }
             post_history["measurements"].append(measurement)
-    # for i in response.post_stat_history:
-        # print(f'''Res: {type(i.post_history.historyValues)}''')
-        # history_values = []
-        # print(i)
-        # for value in i.channel_subs_history:
-            # moment = datetime.datetime.fromtimestamp(value.moment.seconds + value.moment.nanos / 1e9)
-            # measurement = {
-            #     "date": datetime.datetime.fromtimestamp(int(moment.timestamp())),
-            #     "value": value.value
-            # }
-
-        #     current_channel['measurements'].append(measurement)
-        # history_info.append(current_channel)
-    # return {"history_data":history_info}
 
     return post_history
 

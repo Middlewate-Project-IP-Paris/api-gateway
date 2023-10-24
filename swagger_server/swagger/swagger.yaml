@@ -359,7 +359,7 @@ components:
       type: object
       properties:
         scheduler_id:
-          type: integer
+          type: string
         action:
           type: string
         time_repeat:
@@ -371,5 +371,5 @@ components:
         name: name
         action: action
         time_repeat: 6
-        scheduler_id: 0
+        scheduler_id: "id"
 
