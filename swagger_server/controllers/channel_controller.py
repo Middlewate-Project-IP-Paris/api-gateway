@@ -49,7 +49,7 @@ def api_v1_channel_join_invite_link_get(invite_link):  # noqa: E501
 
     assistant = grpc.insecure_channel(f'''localhost:{vars.ASSISTANT_SERVICE_PORT}''')
     stub = assistant_on_demand_pb2_grpc.assistanceOnDemandStub(assistant)
-    request = assistant_on_demand_pb2.InviteLink(invite_link)
+    request = assistant_on_demand_pb2.InviteRequest(invite_link = invite_link)
     response = stub.joinChannel(request)
     if response.status_code == 200:
         return 'Channel will be joined'
